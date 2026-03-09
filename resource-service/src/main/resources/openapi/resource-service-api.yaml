@@ -1,0 +1,147 @@
+openapi: 3.1.0
+info:
+  title: MP3 Storage Service
+  description: MP3 Storage Service for songs uploading
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8080'
+    description: Local dev
+tags:
+  - name: resources
+    description: MP3 file management
+paths:
+  /resources:
+    post:
+      tags:
+        - resources
+      summary: Returns the ID of successfully created resource
+      description: Accepts binary file, stores it, and triggers metadata extraction
+      operationId: createResource
+      requestBody:
+        required: true
+        content:
+          audio/mpeg:
+            schema:
+              $ref: '#/components/schemas/AudioFile'
+      responses:
+        '200':
+          description: File uploaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateResourceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - resources
+      summary: Delete MP3 files from storage
+      description: Delete MP3 file(s) from storage by ids
+      operationId: deleteResources
+      parameters:
+        - name: id
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+          explode: false
+      responses:
+        '200':
+          description: Resource file deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResourcesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /resources/{id}:
+    get:
+      tags:
+        - resources
+      summary: Retrieves the binary audio data of a resource
+      description: Retrieves the binary audio data of a resource by provided id
+      operationId: getResource
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Resource uploaded successfully
+          content:
+            audio/mpeg:
+              schema:
+                $ref: '#/components/schemas/AudioFile'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    AudioFile:
+      type: string
+      format: binary
+      description: The MP3 file
+    CreateResourceResponse:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          format: int64
+    DeleteResourcesResponse:
+      type: object
+      required:
+        - ids
+      properties:
+        ids:
+          type: array
+          items:
+            type: integer
+    ApiError:
+      type: object
+      required:
+        - errorCode
+        - errorMessage
+      properties:
+        errorCode:
+          type: string
+        errorMessage:
+          type: string
+        details:
+          type: object
+          additionalProperties:
+            type: string
+          description: "Only present for validation errors (400)"
+  responses:
+    BadRequestError:
+      description: The provided ID is invalid (e.g., contains letters, decimals, is negative, or zero), or request body is invalid MP3
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    NotFoundError:
+      description: Resource with the specified ID does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    InternalServerError:
+      description: An error occurred on the server
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'

@@ -1,0 +1,182 @@
+openapi: 3.1.0
+info:
+  title: MP3 Metadata Service
+  description: MP3 Metadata Service for storing songs metadata
+  version: 1.0.0
+servers:
+  - url: 'http://localhost:8090'
+    description: Local dev
+tags:
+  - name: songs
+    description: MP3 songs metadata management
+paths:
+  /songs:
+    post:
+      tags:
+        - songs
+      summary: Create a new song metadata record in the database
+      description: Create a new song metadata record in the database with provided id
+      operationId: createSong
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Song"
+      responses:
+        '200':
+          description: Response with ID of created metadata record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSongResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '409':
+          description: Metadata for this ID already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - songs
+      summary: Delete songs metadata
+      description: Delete songs metadata by provided IDs and returns an array of the IDs of successfully deleted metadata records
+      operationId: deleteSongs
+      parameters:
+        - name: ids
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+          explode: false
+      responses:
+        '200':
+          description: Response with the list of IDs of actually deleted metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteSongsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /songs/{id}:
+    get:
+      tags:
+        - songs
+      summary: Get song metadata
+      description: Get song metadata by ID
+      operationId: getSong
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Song metadata found by ID
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/Song'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    Song:
+      type: object
+      required:
+        - id
+        - name
+        - artist
+        - album
+        - duration
+        - year
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        artist:
+          type: string
+          minLength: 1
+          maxLength: 100
+        album:
+          type: string
+          minLength: 1
+          maxLength: 100
+        duration:
+          type: string
+          pattern: "^[0-9][0-9]:[0-5][0-9]$"
+        year:
+          type: integer
+          minimum: 1900
+          maximum: 2099
+    CreateSongResponse:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          format: int64
+    DeleteSongsResponse:
+      type: object
+      required:
+        - ids
+      properties:
+        ids:
+          type: array
+          items:
+            type: integer
+            format: int64
+    ApiError:
+      type: object
+      required:
+        - errorCode
+        - errorMessage
+      properties:
+        errorCode:
+          type: string
+        errorMessage:
+          type: string
+        details:
+          type: object
+          additionalProperties:
+            type: string
+          description: "Only present for validation errors (400)"
+  responses:
+    BadRequestError:
+      description: The provided ID or request body is invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    NotFoundError:
+      description: Resource with the specified ID does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    InternalServerError:
+      description: An error occurred on the server
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'

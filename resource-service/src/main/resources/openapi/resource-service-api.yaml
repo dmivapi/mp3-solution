@@ -48,6 +48,7 @@ paths:
             type: array
             items:
               type: integer
+              format: int64
           explode: false
       responses:
         '200':
@@ -111,6 +112,7 @@ components:
           type: array
           items:
             type: integer
+            format: int64
     ApiError:
       type: object
       required:

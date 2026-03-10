@@ -58,6 +58,7 @@ openApiGenerate {
 }
 
 tasks.register('generateSongServiceClient', org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+    group = "openapi tools"
     generatorName = "spring"
     library = "spring-http-interface"
 

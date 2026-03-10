@@ -3,6 +3,9 @@ package com.epam.learn.resource.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+
+import java.sql.Types;
 
 @Entity
 @Table(name = "resources")
@@ -14,6 +17,7 @@ public class ResourceEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Lob
-    private byte [] audioData;
+    @JdbcTypeCode(Types.BINARY)
+    @Column(columnDefinition = "bytea")
+    private byte[] audioData;
 }

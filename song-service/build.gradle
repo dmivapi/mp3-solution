@@ -24,6 +24,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'io.swagger.core.v3:swagger-annotations-jakarta:2.2.44'
+	annotationProcessor 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 }
 
@@ -35,7 +37,7 @@ openApiGenerate {
 	generatorName = "spring"
 
 	inputSpec = layout.projectDirectory.file("src/main/resources/openapi/song-service-api.yaml").asFile.path
-	outputDir = layout.buildDirectory.file("generated/openapi").get().asFile.path
+	outputDir = layout.buildDirectory.file("generated/song-api").get().asFile.path
 
 	apiPackage = "com.epam.learn.song.api"
 	modelPackage = "com.epam.learn.song.model"
@@ -57,7 +59,7 @@ openApiGenerate {
 sourceSets {
 	main {
 		java {
-			srcDir layout.buildDirectory.file("generated/openapi/src/main/java").get().asFile.path
+			srcDir layout.buildDirectory.file("generated/song-api/src/main/java").get().asFile.path
 		}
 	}
 }

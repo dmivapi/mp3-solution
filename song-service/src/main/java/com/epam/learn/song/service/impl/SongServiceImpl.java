@@ -9,6 +9,7 @@ import com.epam.learn.song.repository.SongRepository;
 import com.epam.learn.song.service.SongService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.StreamSupport;
@@ -21,6 +22,7 @@ public class SongServiceImpl implements SongService {
     private final SongRepository songRepository;
 
     @Override
+    @Transactional
     public CreateSongResponse createSong(Song song) {
         SongEntity songEntity = songMapper.toSongEntity(song);
 
@@ -30,6 +32,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Song getSong(Long id) {
         return songRepository.findById(id)
                 .map(songMapper::toSong)
@@ -37,6 +40,7 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    @Transactional
     public DeleteSongsResponse removeSongs(List<Long> ids) {
         Iterable<SongEntity> existingEntities = songRepository.findAllById(ids);
         List<Long> existingIds = StreamSupport.stream(existingEntities.spliterator(), false)

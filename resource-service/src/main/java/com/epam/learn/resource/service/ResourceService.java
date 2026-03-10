@@ -1,7 +1,16 @@
 package com.epam.learn.resource.service;
 
-import org.springframework.stereotype.Service;
+import com.epam.learn.resource.model.CreateResourceResponse;
+import com.epam.learn.resource.model.DeleteResourcesResponse;
+import org.springframework.core.io.Resource;
 
-@Service
-public class ResourceService {
+import java.util.List;
+
+public interface ResourceService {
+
+    CreateResourceResponse createResource(Resource body);
+
+    Resource getResource(Long id);
+
+    DeleteResourcesResponse deleteResources(List<Long> ids);
 }

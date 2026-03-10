@@ -6,6 +6,9 @@ import com.epam.learn.song.model.DeleteSongsResponse;
 import com.epam.learn.song.model.Song;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 @Mapper
 public interface SongMapper {
 
@@ -13,5 +16,16 @@ public interface SongMapper {
 
     Song toSong(SongEntity song);
     CreateSongResponse toCreateSongResponse(SongEntity songEntity);
-    DeleteSongsResponse toDeleteSongsResponse(Iterable<SongEntity> songEntities);
+    default DeleteSongsResponse toDeleteSongsResponse(Iterable<SongEntity> songEntities) {
+        return new DeleteSongsResponse(toResourceEntityList(songEntities));
+    }
+
+    default List<Long> toResourceEntityList(Iterable<SongEntity> songEntities) {
+        if (songEntities == null) {
+            return List.of();
+        }
+        return StreamSupport.stream(songEntities.spliterator(), false)
+                .map(SongEntity::getId)
+                .toList();
+    }
 }

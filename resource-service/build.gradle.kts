@@ -25,6 +25,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation(libs.apache.tika.core)
+    implementation(libs.apache.tika.parsers)
     implementation(libs.springdoc)
     implementation(libs.mapstruct)
     compileOnly("org.projectlombok:lombok")

@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResourcesController implements ResourcesApi {
 
-    ResourceService resourceService;
+    private final ResourceService resourceService;
 
     @Override
     public ResponseEntity<CreateResourceResponse> createResource(Resource body) {

@@ -1,8 +1,8 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '4.0.3'
-	id 'io.spring.dependency-management' version '1.1.7'
-	id 'org.openapi.generator' version '7.20.0'
+    id 'java'
+    id 'org.springframework.boot' version '4.0.3'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.openapi.generator' version '7.20.0'
 }
 
 group = 'com.epam.learn'
@@ -10,65 +10,61 @@ version = '0.0.1-SNAPSHOT'
 description = 'song-service'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(25)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.16'
-	implementation 'org.mapstruct:mapstruct:1.6.3'
-	compileOnly 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation platform('org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2')
+    implementation 'org.mapstruct:mapstruct:1.6.3'
+    compileOnly 'org.projectlombok:lombok'
 
-	annotationProcessor 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 
-	runtimeOnly 'org.postgresql:postgresql'
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
+    runtimeOnly 'org.postgresql:postgresql'
 }
 
 openApiGenerate {
-	generatorName = "spring"
+    generatorName = "spring"
 
-	inputSpec = layout.projectDirectory.file("src/main/resources/openapi/song-service-api.yaml").asFile.path
-	outputDir = layout.buildDirectory.file("generated/song-api").get().asFile.path
+    inputSpec = layout.projectDirectory.file("src/main/resources/openapi/song-service-api.yaml").asFile.path
+    outputDir = layout.buildDirectory.file("generated/song-api").get().asFile.path
 
-	apiPackage = "com.epam.learn.song.api"
-	modelPackage = "com.epam.learn.song.model"
+    apiPackage = "com.epam.learn.song.api"
+    modelPackage = "com.epam.learn.song.model"
 
-	globalProperties = [
-			apis: "",
-			models: ""
-	]
+    globalProperties = [
+            apis: "",
+            models: ""
+    ]
 
-	configOptions = [
-			interfaceOnly: "true",
-			useSpringBoot4: "true",
-			useTags: "true",
-			openApiNullable: "false",
-			skipDefaultInterface: "true"
-	]
+    configOptions = [
+            interfaceOnly: "true",
+            useSpringBoot4: "true",
+            useTags: "true",
+            openApiNullable: "false",
+            skipDefaultInterface: "true"
+    ]
 }
 
 sourceSets {
-	main {
-		java {
-			srcDir layout.buildDirectory.file("generated/song-api/src/main/java").get().asFile.path
-		}
-	}
+    main {
+        java {
+            srcDir layout.buildDirectory.file("generated/song-api/src/main/java").get().asFile.path
+        }
+    }
 }
 
 tasks.compileJava {
-	dependsOn(tasks.openApiGenerate)
+    dependsOn(tasks.openApiGenerate)
 }

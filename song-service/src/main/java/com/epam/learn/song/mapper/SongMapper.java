@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface SongMapper {
 
     SongEntity toSongEntity(Song song);

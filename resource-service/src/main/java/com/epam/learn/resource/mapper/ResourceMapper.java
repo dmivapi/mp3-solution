@@ -13,7 +13,7 @@ import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ResourceMapper {
 
     @Mapping(target = "id", ignore = true)

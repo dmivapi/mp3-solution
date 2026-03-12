@@ -1,6 +1,7 @@
 package com.epam.learn.song.service.impl;
 
 import com.epam.learn.song.entity.SongEntity;
+import com.epam.learn.song.exception.SongNotFoundException;
 import com.epam.learn.song.mapper.SongMapper;
 import com.epam.learn.song.model.CreateSongResponse;
 import com.epam.learn.song.model.DeleteSongsResponse;
@@ -36,7 +37,7 @@ public class SongServiceImpl implements SongService {
     public Song getSong(Long id) {
         return songRepository.findById(id)
                 .map(songMapper::toSong)
-                .orElseThrow();
+                .orElseThrow(() -> new SongNotFoundException(id));
     }
 
     @Override

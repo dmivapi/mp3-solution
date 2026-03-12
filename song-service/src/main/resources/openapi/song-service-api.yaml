@@ -155,18 +155,23 @@ components:
           type: string
         errorMessage:
           type: string
+    ValidationApiError:
+      allOf:
+        - $ref: "#/components/schemas/ApiError"
+      required:
+        - details
+      properties:
         details:
           type: object
           additionalProperties:
             type: string
-          description: "Only present for validation errors (400)"
   responses:
     BadRequestError:
       description: The provided ID or request body is invalid
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ApiError'
+            $ref: '#/components/schemas/ValidationApiError'
     NotFoundError:
       description: Resource with the specified ID does not exist
       content:

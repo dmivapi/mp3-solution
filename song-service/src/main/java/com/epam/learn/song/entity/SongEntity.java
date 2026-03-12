@@ -23,5 +23,5 @@ public class SongEntity {
 
     private String duration;
 
-    private Integer year;
+    private String year;
 }

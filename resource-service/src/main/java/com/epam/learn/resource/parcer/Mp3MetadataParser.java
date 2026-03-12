@@ -48,12 +48,12 @@ public class Mp3MetadataParser {
         return String.format("%02d:%02d", duration.toMinutes(), duration.toSecondsPart());
     }
 
-    private Integer parseYear(String releaseDate) {
+    private String parseYear(String releaseDate) {
         if (releaseDate == null || releaseDate.length() < 4) {
             return null;
         }
         try {
-            return Integer.valueOf(releaseDate.substring(0, 4));
+            return Integer.valueOf(releaseDate.substring(0, 4)).toString();
         } catch (NumberFormatException _) {
             return null;
         }

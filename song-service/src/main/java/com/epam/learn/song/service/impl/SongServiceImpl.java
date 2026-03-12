@@ -1,6 +1,8 @@
 package com.epam.learn.song.service.impl;
 
 import com.epam.learn.song.entity.SongEntity;
+import com.epam.learn.song.exception.ParsingIdException;
+import com.epam.learn.song.exception.SongAlreadyExistsException;
 import com.epam.learn.song.exception.SongNotFoundException;
 import com.epam.learn.song.mapper.SongMapper;
 import com.epam.learn.song.model.CreateSongResponse;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -25,6 +28,10 @@ public class SongServiceImpl implements SongService {
     @Override
     @Transactional
     public CreateSongResponse createSong(Song song) {
+        if (songRepository.existsById(song.getId())) {
+            throw new SongAlreadyExistsException(song.getId());
+        }
+
         SongEntity songEntity = songMapper.toSongEntity(song);
 
         SongEntity persistedEntity = songRepository.save(songEntity);
@@ -42,7 +49,8 @@ public class SongServiceImpl implements SongService {
 
     @Override
     @Transactional
-    public DeleteSongsResponse removeSongs(List<Long> ids) {
+    public DeleteSongsResponse removeSongs(String idsCsv) {
+        List<Long> ids = getSongIds(idsCsv);
         Iterable<SongEntity> existingEntities = songRepository.findAllById(ids);
         List<Long> existingIds = StreamSupport.stream(existingEntities.spliterator(), false)
                         .map(SongEntity::getId)
@@ -51,5 +59,19 @@ public class SongServiceImpl implements SongService {
         songRepository.deleteAllById(existingIds);
 
         return songMapper.toDeleteSongsResponse(existingEntities);
+    }
+
+    private List<Long> getSongIds(String ids) {
+        return Arrays.stream(ids.split(","))
+                .map(this::getSongId)
+                .toList();
+    }
+
+    private Long getSongId(String id) {
+        try {
+            return Long.parseLong(id);
+        } catch (NumberFormatException _) {
+            throw new ParsingIdException(id);
+        }
     }
 }

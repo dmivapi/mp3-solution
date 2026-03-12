@@ -1,6 +1,7 @@
 package com.epam.learn.resource.service.impl;
 
 import com.epam.learn.resource.entity.ResourceEntity;
+import com.epam.learn.resource.exception.ResourceNotFoundException;
 import com.epam.learn.resource.mapper.ResourceMapper;
 import com.epam.learn.resource.mapper.SongMapper;
 import com.epam.learn.resource.model.CreateResourceResponse;
@@ -48,7 +49,7 @@ public class ResourceServiceImpl implements ResourceService {
     public Resource getResource(Long id) {
         return resourceRepository.findById(id)
                 .map(resourceMapper::toResource)
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     @Override

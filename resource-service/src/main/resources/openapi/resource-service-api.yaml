@@ -74,6 +74,8 @@ paths:
           schema:
             type: integer
             format: int64
+            minimum: 1
+            x-minimum-message: "Must be a positive integer"
       responses:
         '200':
           description: Resource uploaded successfully

@@ -21,6 +21,20 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(InvalidMp3Exception.class)
+    public ResponseEntity<ApiError> handleInvalidMp3Exception(InvalidMp3Exception ex) {
+        ApiError apiError = new ApiError(String.valueOf(HttpStatus.BAD_REQUEST.value()), ex.getMessage());
+
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiError> handleException(Exception ex) {
+        ApiError apiError = new ApiError(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), "Internal server error");
+
+        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiError> handleResourceNotFoundException(ResourceNotFoundException ex) {
         ApiError apiError = new ApiError(String.valueOf(HttpStatus.NOT_FOUND.value()), ex.getMessage());

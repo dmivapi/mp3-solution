@@ -1,5 +1,6 @@
 package com.epam.learn.resource.parcer;
 
+import com.epam.learn.resource.exception.InvalidMp3Exception;
 import com.epam.learn.resource.model.Mp3Metadata;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -28,7 +29,7 @@ public class Mp3MetadataParser {
         try {
             mp3Parser.parse(inputStream, handler, metadata, context);
         } catch (IOException | SAXException | TikaException e) {
-            throw new RuntimeException("Can't parse mp3 metadata", e);
+            throw new InvalidMp3Exception(e);
         }
 
         return new Mp3Metadata(

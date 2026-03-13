@@ -30,6 +30,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             Map.entry("year",     "Year")
     );
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiError> handleException(Exception ex) {
+        ApiError apiError = new ApiError(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), "Internal server error");
+
+        return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(SongNotFoundException.class)
     public ResponseEntity<ApiError> handleSongNotFoundException(SongNotFoundException ex) {
         ApiError apiError = new ApiError(String.valueOf(HttpStatus.NOT_FOUND.value()),ex.getMessage());

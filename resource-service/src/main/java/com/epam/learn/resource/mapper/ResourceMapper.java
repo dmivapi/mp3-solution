@@ -1,6 +1,7 @@
 package com.epam.learn.resource.mapper;
 
 import com.epam.learn.resource.entity.ResourceEntity;
+import com.epam.learn.resource.exception.InvalidMp3Exception;
 import com.epam.learn.resource.model.CreateResourceResponse;
 import com.epam.learn.resource.model.DeleteResourcesResponse;
 import org.mapstruct.Mapper;
@@ -9,7 +10,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -22,7 +22,7 @@ public interface ResourceMapper {
         try {
             return audioData.getContentAsByteArray();
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw new InvalidMp3Exception(e);
         }
     }
 

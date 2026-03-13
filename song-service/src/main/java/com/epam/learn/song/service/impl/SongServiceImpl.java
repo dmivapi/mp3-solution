@@ -76,7 +76,7 @@ public class SongServiceImpl implements SongService {
 
     private Long getSongId(String id) {
         try {
-            return Long.parseLong(id);
+            return Long.parseLong(id.trim());
         } catch (NumberFormatException _) {
             throw new ParsingIdException(id);
         }

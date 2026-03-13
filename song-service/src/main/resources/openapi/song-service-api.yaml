@@ -4,7 +4,7 @@ info:
   description: MP3 Metadata Service for storing songs metadata
   version: 1.0.0
 servers:
-  - url: 'http://localhost:8090'
+  - url: 'http://localhost:8091'
     description: Local dev
 tags:
   - name: songs

@@ -4,7 +4,7 @@ info:
   description: MP3 Storage Service for songs uploading
   version: 1.0.0
 servers:
-  - url: 'http://localhost:8080'
+  - url: 'http://localhost:8090'
     description: Local dev
 tags:
   - name: resources

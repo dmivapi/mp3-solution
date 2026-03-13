@@ -47,7 +47,7 @@ paths:
       description: Delete songs metadata by provided IDs and returns an array of the IDs of successfully deleted metadata records
       operationId: deleteSongs
       parameters:
-        - name: ids
+        - name: id
           in: query
           required: true
           schema:

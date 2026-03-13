@@ -60,10 +60,13 @@ public class ResourceServiceImpl implements ResourceService {
     public DeleteResourcesResponse deleteResources(String idsCsv) {
         List<Long> requestIds = extractIds(idsCsv);
         Iterable<ResourceEntity> existingEntities = resourceRepository.findAllById(requestIds);
-        List<Long> existingIds = extractIds(existingEntities);
 
-        songsApi.deleteSongs(joinIds(existingIds));
-        resourceRepository.deleteAllById(existingIds);
+        if (existingEntities.iterator().hasNext()) {
+            List<Long> existingIds = extractIds(existingEntities);
+
+            songsApi.deleteSongs(joinIds(existingIds));
+            resourceRepository.deleteAllById(existingIds);
+        }
 
         return resourceMapper.toDeleteResourceResponse(existingEntities);
     }

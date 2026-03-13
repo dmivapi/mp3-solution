@@ -50,18 +50,25 @@ public class SongServiceImpl implements SongService {
     @Override
     @Transactional
     public DeleteSongsResponse removeSongs(String idsCsv) {
-        List<Long> ids = getSongIds(idsCsv);
-        Iterable<SongEntity> existingEntities = songRepository.findAllById(ids);
-        List<Long> existingIds = StreamSupport.stream(existingEntities.spliterator(), false)
-                        .map(SongEntity::getId)
-                        .toList();
+        List<Long> requestIds = extractIds(idsCsv);
+        Iterable<SongEntity> existingEntities = songRepository.findAllById(requestIds);
 
-        songRepository.deleteAllById(existingIds);
+        if (existingEntities.iterator().hasNext()) {
+            List<Long> existingIds = extractIds(existingEntities);
+
+            songRepository.deleteAllById(existingIds);
+        }
 
         return songMapper.toDeleteSongsResponse(existingEntities);
     }
 
-    private List<Long> getSongIds(String ids) {
+    private static List<Long> extractIds(Iterable<SongEntity> existingEntities) {
+        return StreamSupport.stream(existingEntities.spliterator(), false)
+                .map(SongEntity::getId)
+                .toList();
+    }
+
+    private List<Long> extractIds(String ids) {
         return Arrays.stream(ids.split(","))
                 .map(this::getSongId)
                 .toList();

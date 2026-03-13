@@ -53,8 +53,7 @@ paths:
           schema:
             type: string
             minLength: 1
-            maxLength: 199
-            x-size-message: "IDs CSV string length must be between 1 and 199 characters"
+            maxLength: 200
       responses:
         '200':
           description: Response with the list of IDs of actually deleted metadata

@@ -1,6 +1,7 @@
 package com.epam.learn.resource.service.impl;
 
 import com.epam.learn.resource.entity.ResourceEntity;
+import com.epam.learn.resource.exception.ParsingIdException;
 import com.epam.learn.resource.exception.ResourceNotFoundException;
 import com.epam.learn.resource.mapper.ResourceMapper;
 import com.epam.learn.resource.mapper.SongMapper;
@@ -16,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -54,15 +57,39 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     @Transactional
-    public DeleteResourcesResponse deleteResources(List<Long> ids) {
-        Iterable<ResourceEntity> existingEntities = resourceRepository.findAllById(ids);
-        List<Long> existingIds = StreamSupport.stream(existingEntities.spliterator(), false)
-                .map(ResourceEntity::getId)
-                .toList();
+    public DeleteResourcesResponse deleteResources(String idsCsv) {
+        List<Long> requestIds = extractIds(idsCsv);
+        Iterable<ResourceEntity> existingEntities = resourceRepository.findAllById(requestIds);
+        List<Long> existingIds = extractIds(existingEntities);
 
-        songsApi.deleteSongs(existingIds);
+        songsApi.deleteSongs(joinIds(existingIds));
         resourceRepository.deleteAllById(existingIds);
 
         return resourceMapper.toDeleteResourceResponse(existingEntities);
+    }
+
+    private List<Long> extractIds(Iterable<ResourceEntity> entities) {
+        return StreamSupport.stream(entities.spliterator(), false)
+                .map(ResourceEntity::getId)
+                .toList();
+    }
+    private List<Long> extractIds(String ids) {
+        return Arrays.stream(ids.split(","))
+                .map(this::getResourceId)
+                .toList();
+    }
+
+    private String joinIds(List<Long> ids) {
+        return ids.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
+    }
+
+    private Long getResourceId(String id) {
+        try {
+            return Long.parseLong(id.trim());
+        } catch (NumberFormatException _) {
+            throw new ParsingIdException(id);
+        }
     }
 }

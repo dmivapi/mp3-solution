@@ -9,8 +9,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 public class ResourcesController implements ResourcesApi {
@@ -28,7 +26,7 @@ public class ResourcesController implements ResourcesApi {
     }
 
     @Override
-    public ResponseEntity<DeleteResourcesResponse> deleteResources(List<Long> id) {
+    public ResponseEntity<DeleteResourcesResponse> deleteResources(String id) {
         return ResponseEntity.ok(resourceService.deleteResources(id));
     }
 }

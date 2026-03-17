@@ -26,6 +26,9 @@ services:
       - ./init-scripts/song-db:/docker-entrypoint-initdb.d:ro
 
   resource-service:
+    depends_on:
+      resource-db:
+        condition: service_healthy
     build:
       context: .
       dockerfile: resource-service/Dockerfile
@@ -37,6 +40,9 @@ services:
       - "8090:8090"
 
   song-service:
+    depends_on:
+      song-db:
+        condition: service_healthy
     build:
       context: .
       dockerfile: song-service/Dockerfile

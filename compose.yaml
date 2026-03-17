@@ -22,11 +22,18 @@ services:
       - "5433:5432"
 
   resource-service:
+    build:
+      context: .
+      dockerfile: resource-service/Dockerfile
     environment:
       SPRING_DATASOURCE_URL: ${RESOURCE_DB_URL}
       SPRING_DATASOURCE_USER: ${RESOURCE_DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${RESOURCE_DB_PASSWORD}
+
   song-service:
+    build:
+      context: .
+      dockerfile: song-service/Dockerfile
     environment:
       SPRING_DATASOURCE_URL: ${SONG_DB_URL}
       SPRING_DATASOURCE_USER: ${SONG_DB_USER}

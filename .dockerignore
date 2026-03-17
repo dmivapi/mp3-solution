@@ -1,11 +1,9 @@
 **/build/
 **/.gradle/
 
-### IntelliJ IDEA ###
-*.iws
-*.iml
-*.ipr
 .idea/
 .run/
-
 **/.DS_Store
+**/*.iml
+
+.env

@@ -7,7 +7,7 @@ spring:
   application:
     name: resource-service
   datasource:
-    url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/resource-db}"
+    url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/resource_db}"
     username: "${SPRING_DATASOURCE_USER:postgres}"
     password: "${SPRING_DATASOURCE_PASSWORD:postgres}"
   jpa:

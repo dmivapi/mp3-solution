@@ -2,7 +2,7 @@ server:
   port: 8090
 song-service:
   client:
-    base-url: "http://localhost:8091"
+    base-url: "${SONG_SERVICE_URL:http://localhost:8091}"
 spring:
   application:
     name: resource-service

@@ -4,7 +4,7 @@ services:
       file: common.yaml
       service: postgres-base
     environment:
-      POSTGRES_DB: resource_db
+      POSTGRES_DB: ${RESOURCE_DB}
       POSTGRES_USER: ${RESOURCE_DB_USER}
       POSTGRES_PASSWORD: ${RESOURCE_DB_PASSWORD}
     ports:
@@ -17,7 +17,7 @@ services:
       file: common.yaml
       service: postgres-base
     environment:
-      POSTGRES_DB: song_db
+      POSTGRES_DB: ${SONG_DB}
       POSTGRES_USER: ${SONG_DB_USER}
       POSTGRES_PASSWORD: ${SONG_DB_PASSWORD}
     ports:
@@ -29,13 +29,16 @@ services:
     depends_on:
       resource-db:
         condition: service_healthy
+      song-service:
+        condition: service_healthy
     build:
       context: .
       dockerfile: resource-service/Dockerfile
     environment:
-      SPRING_DATASOURCE_URL: ${RESOURCE_DB_URL}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://resource-db:5432/${RESOURCE_DB}
       SPRING_DATASOURCE_USER: ${RESOURCE_DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${RESOURCE_DB_PASSWORD}
+      SONG_SERVICE_URL: http://song-service:8091
     ports:
       - "8090:8090"
 
@@ -43,11 +46,17 @@ services:
     depends_on:
       song-db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8091/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     build:
       context: .
       dockerfile: song-service/Dockerfile
     environment:
-      SPRING_DATASOURCE_URL: ${SONG_DB_URL}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://song-db:5432/${SONG_DB}
       SPRING_DATASOURCE_USER: ${SONG_DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${SONG_DB_PASSWORD}
     ports:

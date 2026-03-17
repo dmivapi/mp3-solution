@@ -10,3 +10,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never

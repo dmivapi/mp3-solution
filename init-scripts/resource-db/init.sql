@@ -1,4 +1,4 @@
 CREATE TABLE resources (
     id BIGSERIAL PRIMARY KEY,
-    audioData BYTEA NOT NULL
+    audio_data BYTEA NOT NULL
 );

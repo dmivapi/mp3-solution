@@ -11,6 +11,14 @@ eureka:
     hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
   server:
     wait-time-in-ms-when-sync-empty: 0
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
 logging:
   level:
     com:

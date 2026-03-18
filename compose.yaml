@@ -40,7 +40,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://resource-db:5432/${RESOURCE_DB}
       SPRING_DATASOURCE_USER: ${RESOURCE_DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${RESOURCE_DB_PASSWORD}
-      SONG_SERVICE_URL: http://song-service:8091
+      SONG_SERVICE_URL: http://song-service
       EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka/
     ports:
       - "8090:8090"
@@ -66,7 +66,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SONG_DB_PASSWORD}
       EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka/
     ports:
-      - "8091:8091"
+      - "8091-8092:8091"
 
   eureka-server:
     healthcheck:

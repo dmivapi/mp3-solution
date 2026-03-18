@@ -31,6 +31,8 @@ services:
         condition: service_healthy
       song-service:
         condition: service_healthy
+      eureka-server:
+        condition: service_healthy
     build:
       context: .
       dockerfile: resource-service/Dockerfile
@@ -46,6 +48,8 @@ services:
   song-service:
     depends_on:
       song-db:
+        condition: service_healthy
+      eureka-server:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:8091/actuator/health || exit 1"]
@@ -65,6 +69,12 @@ services:
       - "8091:8091"
 
   eureka-server:
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8761/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     build:
       context: .
       dockerfile: eureka-server/Dockerfile

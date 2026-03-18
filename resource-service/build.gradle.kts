@@ -25,6 +25,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     implementation(libs.apache.tika.core)
     implementation(libs.apache.tika.parsers)
     implementation(libs.springdoc)
@@ -36,6 +37,12 @@ dependencies {
     annotationProcessor(libs.mapstruct.processor)
 
     runtimeOnly("org.postgresql:postgresql")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom(libs.spring.cloud.bom.get().toString())
+    }
 }
 
 openApiGenerate {

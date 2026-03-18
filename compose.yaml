@@ -61,3 +61,12 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SONG_DB_PASSWORD}
     ports:
       - "8091:8091"
+
+  eureka-server:
+    build:
+      context: .
+      dockerfile: eureka-server/Dockerfile
+    environment:
+      EUREKA_INSTANCE_HOSTNAME: eureka-server
+    ports:
+      - "8761:8761"

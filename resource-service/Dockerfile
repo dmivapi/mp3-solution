@@ -8,7 +8,7 @@ COPY settings.gradle.kts .
 COPY gradle/libs.versions.toml ./gradle/
 COPY resource-service/build.gradle.kts ./resource-service/
 COPY song-service/src/main/resources/openapi/song-service-api.yaml ./song-service/src/main/resources/openapi/
-RUN chmod +x ./gradlew && sed -i '/include("song-service")/d' settings.gradle.kts
+RUN chmod +x ./gradlew && sed -i '/include(/ { /resource-service/!d; }' settings.gradle.kts
 RUN ./gradlew :resource-service:dependencies --no-daemon || true
 
 COPY resource-service/src ./resource-service/src

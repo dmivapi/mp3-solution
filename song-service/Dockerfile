@@ -7,7 +7,7 @@ COPY gradle/wrapper ./gradle/wrapper
 COPY settings.gradle.kts .
 COPY gradle/libs.versions.toml ./gradle/
 COPY song-service/build.gradle.kts ./song-service/
-RUN chmod +x ./gradlew && sed -i '/include("resource-service")/d' settings.gradle.kts
+RUN chmod +x ./gradlew && sed -i '/include(/ { /song-service/!d; }' settings.gradle.kts
 RUN ./gradlew :song-service:dependencies --no-daemon || true
 
 COPY song-service/src ./song-service/src

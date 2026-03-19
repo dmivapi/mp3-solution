@@ -103,4 +103,4 @@ services:
     environment:
       EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka/
     ports:
-      - "8085:8080"
+      - "8085:8085"

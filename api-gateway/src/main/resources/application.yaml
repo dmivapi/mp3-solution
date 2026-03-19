@@ -1,19 +1,21 @@
 server:
-  port: 8080
+  port: 8085
 spring:
   application:
     name: api-gateway
   cloud:
     gateway:
-      routes:
-        - id: resource-service
-          uri: lb://RESOURCE-SERVICE
-          predicates:
-            - Path=/resources/**
-        - id: song-service
-          uri: lb://SONG-SERVICE
-          predicates:
-            - Path=/songs/**
+      server:
+        webflux:
+          routes:
+            - id: resource-service
+              uri: lb://RESOURCE-SERVICE
+              predicates:
+                - Path=/resources/**,/resources
+            - id: song-service
+              uri: lb://SONG-SERVICE
+              predicates:
+                - Path=/songs/**,/songs
 eureka:
   client:
     service-url:

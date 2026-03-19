@@ -17,5 +17,5 @@ RUN find ./api-gateway/build/libs -name "api-gateway-*.jar" ! -name "*-plain.jar
 FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 COPY --from=build /app/app.jar .
-EXPOSE 8080
+EXPOSE 8085
 CMD ["java", "-jar", "app.jar"]

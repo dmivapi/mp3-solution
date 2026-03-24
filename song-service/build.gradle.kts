@@ -25,7 +25,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
-    implementation("org.apache.kafka:kafka-clients")
+    implementation("org.springframework.boot:spring-boot-starter-kafka")
     implementation(libs.springdoc)
     implementation(libs.mapstruct)
     compileOnly("org.projectlombok:lombok")

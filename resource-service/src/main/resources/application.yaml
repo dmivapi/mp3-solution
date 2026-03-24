@@ -10,9 +10,17 @@ eureka:
     registry-fetch-interval-seconds: 5
   instance:
     lease-renewal-interval-in-seconds: 5
+kafka:
+  topic:
+    song-metadata: song-metadata
 spring:
   application:
     name: resource-service
+  kafka:
+    bootstrap-servers: "${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   datasource:
     url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/resource_db}"
     username: "${SPRING_DATASOURCE_USER:postgres}"

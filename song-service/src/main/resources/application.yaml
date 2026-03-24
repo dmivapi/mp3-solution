@@ -7,9 +7,21 @@ eureka:
     registry-fetch-interval-seconds: 5
   instance:
     lease-renewal-interval-in-seconds: 5
+kafka:
+  topic:
+    song-metadata: song-metadata
 spring:
   application:
     name: song-service
+  kafka:
+    bootstrap-servers: "${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}"
+    consumer:
+      group-id: song-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.epam.learn.song.model
   datasource:
     url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/song_db}"
     username: "${SPRING_DATASOURCE_USER:postgres}"

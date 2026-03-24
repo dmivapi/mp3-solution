@@ -4,6 +4,7 @@ import com.epam.learn.resource.entity.ResourceEntity;
 import com.epam.learn.resource.exception.ParsingIdException;
 import com.epam.learn.resource.exception.ResourceNotFoundException;
 import com.epam.learn.resource.mapper.ResourceMapper;
+import com.epam.learn.resource.kafka.SongMetadataProducer;
 import com.epam.learn.resource.mapper.SongMapper;
 import com.epam.learn.resource.model.CreateResourceResponse;
 import com.epam.learn.resource.model.DeleteResourcesResponse;
@@ -32,6 +33,7 @@ public class ResourceServiceImpl implements ResourceService {
     private final Mp3MetadataParser mp3MetadataParser;
     private final SongMapper songMapper;
     private final SongsApi songsApi;
+    private final SongMetadataProducer songMetadataProducer;
 
     @Override
     @Transactional
@@ -42,7 +44,7 @@ public class ResourceServiceImpl implements ResourceService {
         ResourceEntity persistedResourceEntity = resourceRepository.save(resourceEntity);
 
         Song song = songMapper.toSong(persistedResourceEntity.getId(), mp3Metadata);
-        songsApi.createSong(song);
+        songMetadataProducer.send(song);
 
         return resourceMapper.toCreateResourceResponse(persistedResourceEntity);
     }

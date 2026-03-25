@@ -12,6 +12,19 @@ spec:
       targetPort: 8091
       nodePort: 30091
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: song-service-pvc
+  namespace: k8s-program
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -42,3 +55,10 @@ spec:
               value: postgres
             - name: EUREKA_CLIENT_ENABLED
               value: "false"
+          volumeMounts:
+            - name: song-data
+              mountPath: /data/song-service
+      volumes:
+        - name: song-data
+          persistentVolumeClaim:
+            claimName: song-service-pvc

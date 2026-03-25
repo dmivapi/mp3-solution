@@ -17,5 +17,4 @@ RUN find ./song-service/build/libs -name "song-service-*.jar" ! -name "*-plain.j
 FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 COPY --from=build /app/app.jar .
-EXPOSE 8091
 CMD ["java", "-jar", "app.jar"]

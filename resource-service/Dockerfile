@@ -18,5 +18,4 @@ RUN find ./resource-service/build/libs -name "resource-service-*.jar" ! -name "*
 FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 COPY --from=build /app/app.jar .
-EXPOSE 8090
 CMD ["java", "-jar", "app.jar"]

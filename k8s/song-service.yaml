@@ -53,6 +53,8 @@ spec:
               value: postgres
             - name: SPRING_DATASOURCE_PASSWORD
               value: postgres
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
             - name: EUREKA_CLIENT_ENABLED
               value: "false"
           volumeMounts:

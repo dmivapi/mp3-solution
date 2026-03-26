@@ -42,5 +42,7 @@ spec:
               value: postgres
             - name: SONG_SERVICE_URL
               value: http://song-service:8091
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
             - name: EUREKA_CLIENT_ENABLED
               value: "false"

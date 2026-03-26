@@ -46,3 +46,5 @@ spec:
               value: update
             - name: EUREKA_CLIENT_ENABLED
               value: "false"
+            - name: SPRING_CLOUD_LOADBALANCER_ENABLED
+              value: "false"

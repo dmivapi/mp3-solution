@@ -4,7 +4,7 @@ metadata:
   name: song-db
   namespace: k8s-program
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: song-db
   ports:

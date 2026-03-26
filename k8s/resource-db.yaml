@@ -4,7 +4,7 @@ metadata:
   name: resource-db
   namespace: k8s-program
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: resource-db
   ports:

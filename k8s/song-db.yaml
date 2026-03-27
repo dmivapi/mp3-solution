@@ -4,7 +4,7 @@ metadata:
   name: song-db
   namespace: k8s-program
 spec:
-  type: ClusterIP
+  clusterIP: None
   selector:
     app: song-db
   ports:
@@ -12,11 +12,12 @@ spec:
       targetPort: 5432
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: song-db
   namespace: k8s-program
 spec:
+  serviceName: song-db
   replicas: 1
   selector:
     matchLabels:
@@ -39,3 +40,16 @@ spec:
               value: postgres
             - name: POSTGRES_PASSWORD
               value: postgres
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/postgresql
+  volumeClaimTemplates:
+    - metadata:
+        name: db-data
+      spec:
+        storageClassName: hostpath
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 256Mi

@@ -47,7 +47,7 @@ spec:
     - metadata:
         name: db-data
       spec:
-        storageClassName: hostpath
+        storageClassName: local-path
         accessModes:
           - ReadWriteOnce
         resources:

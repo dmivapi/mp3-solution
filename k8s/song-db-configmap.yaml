@@ -4,6 +4,7 @@ metadata:
   name: song-db-config
   namespace: k8s-program
 data:
+  postgres-db: song_db
   init.sql: |
     CREATE TABLE songs
     (

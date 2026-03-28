@@ -33,18 +33,17 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 8090
+          envFrom:
+            - configMapRef:
+                name: resource-service-config
           env:
-            - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://resource-db:5432/resource_db
             - name: SPRING_DATASOURCE_USER
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: db-username
             - name: SPRING_DATASOURCE_PASSWORD
-              value: postgres
-            - name: SONG_SERVICE_URL
-              value: http://song-service:8091
-            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
-              value: update
-            - name: EUREKA_CLIENT_ENABLED
-              value: "false"
-            - name: SPRING_CLOUD_LOADBALANCER_ENABLED
-              value: "false"
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: db-password

@@ -4,6 +4,7 @@ metadata:
   name: resource-db-config
   namespace: k8s-program
 data:
+  postgres-db: resource_db
   init.sql: |
     CREATE TABLE resources (
         id BIGSERIAL PRIMARY KEY,

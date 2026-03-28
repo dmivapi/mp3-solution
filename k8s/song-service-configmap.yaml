@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: song-service-config
+  namespace: k8s-program
+data:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://song-db:5432/song_db
+  SPRING_JPA_HIBERNATE_DDL_AUTO: none
+  EUREKA_CLIENT_ENABLED: "false"

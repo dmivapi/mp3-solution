@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: resource-db-config
+  namespace: k8s-program
+data:
+  init.sql: |
+    CREATE TABLE resources (
+        id BIGSERIAL PRIMARY KEY,
+        audio_data BYTEA NOT NULL
+    );

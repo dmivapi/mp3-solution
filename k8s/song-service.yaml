@@ -60,6 +60,23 @@ spec:
                 secretKeyRef:
                   name: db-credentials
                   key: db-password
+          startupProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8091
+            initialDelaySeconds: 15
+            periodSeconds: 3
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8091
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8091
+            periodSeconds: 5
           volumeMounts:
             - name: song-data
               mountPath: /data/song-service

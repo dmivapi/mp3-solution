@@ -17,6 +17,8 @@ kind: Deployment
 metadata:
   name: resource-service
   namespace: k8s-program
+  annotations:
+    kubernetes.io/change-cause: "Adding genre field and upgrading to version 2.0"
 spec:
   strategy:
     type: RollingUpdate
@@ -35,7 +37,7 @@ spec:
       terminationGracePeriodSeconds: 40
       containers:
         - name: resource-service
-          image: resource-service:1.0
+          image: resource-service:2.0
           imagePullPolicy: Never
           ports:
             - containerPort: 8090

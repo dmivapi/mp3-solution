@@ -18,6 +18,11 @@ metadata:
   name: resource-service
   namespace: k8s-program
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   replicas: 2
   selector:
     matchLabels:
@@ -29,7 +34,7 @@ spec:
     spec:
       containers:
         - name: resource-service
-          image: resource-service:latest
+          image: resource-service:1.0
           imagePullPolicy: Never
           ports:
             - containerPort: 8090

@@ -1,5 +1,6 @@
 server:
   port: 8091
+  shutdown: graceful
 eureka:
   client:
     service-url:
@@ -10,6 +11,8 @@ eureka:
 spring:
   application:
     name: song-service
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
   datasource:
     url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/song_db}"
     username: "${SPRING_DATASOURCE_USER:postgres}"

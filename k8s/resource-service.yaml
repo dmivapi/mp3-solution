@@ -32,6 +32,7 @@ spec:
       labels:
         app: resource-service
     spec:
+      terminationGracePeriodSeconds: 40
       containers:
         - name: resource-service
           image: resource-service:1.0

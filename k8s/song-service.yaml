@@ -45,6 +45,7 @@ spec:
       labels:
         app: song-service
     spec:
+      terminationGracePeriodSeconds: 40
       containers:
         - name: song-service
           image: song-service:1.0

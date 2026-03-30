@@ -36,6 +36,7 @@ public class Mp3MetadataParser {
                 metadata.get(TikaCoreProperties.TITLE),
                 metadata.get("xmpDM:artist"),
                 metadata.get("xmpDM:album"),
+                metadata.get("xmpDM:genre"),
                 formatDuration(metadata.get("xmpDM:duration")),
                 parseYear(metadata.get("xmpDM:releaseDate")));
     }

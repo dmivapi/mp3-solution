@@ -21,6 +21,8 @@ public class SongEntity {
 
     private String album;
 
+    private String genre;
+
     private String duration;
 
     private String year;

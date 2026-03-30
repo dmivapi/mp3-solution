@@ -1,3 +1,3 @@
 package com.epam.learn.resource.model;
 
-public record Mp3Metadata (String name, String artist, String album, String duration, String year) {}
+public record Mp3Metadata (String name, String artist, String album, String genre, String duration, String year) {}

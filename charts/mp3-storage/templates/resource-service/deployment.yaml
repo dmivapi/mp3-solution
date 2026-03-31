@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resource-service
+  namespace: {{ .Values.namespace }}
+  annotations:
+    kubernetes.io/change-cause: "Adding genre field and upgrading to version 2.0"
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: resource-service
+  template:
+    metadata:
+      labels:
+        app: resource-service
+    spec:
+      terminationGracePeriodSeconds: 40
+      containers:
+        - name: resource-service
+          image: resource-service:2.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8090
+          envFrom:
+            - configMapRef:
+                name: resource-service-config
+          env:
+            - name: SPRING_DATASOURCE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: db-username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: db-password
+          startupProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8090
+            initialDelaySeconds: 10
+            periodSeconds: 3
+            failureThreshold: 15
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8090
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8090
+            periodSeconds: 5

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: resource-db-config
+  namespace: {{ .Values.namespace }}
+data:
+  postgres-db: resource_db
+  init.sql: |
+    CREATE TABLE resources (
+        id BIGSERIAL PRIMARY KEY,
+        audio_data BYTEA NOT NULL
+    );

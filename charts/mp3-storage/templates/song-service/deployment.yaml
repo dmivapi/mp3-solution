@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: song-service
+  namespace: {{ .Values.namespace }}
+  annotations:
+    kubernetes.io/change-cause: "Adding genre fields and upgrading to version 2.0"
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: song-service
+  template:
+    metadata:
+      labels:
+        app: song-service
+    spec:
+      terminationGracePeriodSeconds: 40
+      containers:
+        - name: song-service
+          image: song-service:2.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8091
+          envFrom:
+            - configMapRef:
+                name: song-service-config
+          env:
+            - name: SPRING_DATASOURCE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: db-username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: db-password
+          startupProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8091
+            initialDelaySeconds: 15
+            periodSeconds: 3
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8091
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8091
+            periodSeconds: 5
+          volumeMounts:
+            - name: song-data
+              mountPath: /data/song-service
+      volumes:
+        - name: song-data
+          persistentVolumeClaim:
+            claimName: song-service-pvc

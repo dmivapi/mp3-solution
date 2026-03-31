@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: resource-service-config
+  namespace: {{ .Values.namespace }}
+data:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://resource-db:5432/resource_db
+  SONG_SERVICE_URL: http://song-service:8091
+  SPRING_JPA_HIBERNATE_DDL_AUTO: none
+  EUREKA_CLIENT_ENABLED: "false"
+  SPRING_CLOUD_LOADBALANCER_ENABLED: "false"

@@ -1,4 +1,2 @@
 namespace: k8s-program
 replicaCount: 2
-resourceServicePort: 30090
-songServicePort: 30091

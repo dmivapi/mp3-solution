@@ -4,10 +4,9 @@ metadata:
   name: song-service
   namespace: {{ .Values.namespace }}
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: song-service
   ports:
     - port: 8091
       targetPort: 8091
-      nodePort: {{ .Values.songServicePort }}

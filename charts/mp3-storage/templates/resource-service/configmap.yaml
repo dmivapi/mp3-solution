@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: resource-service-config
   namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "mp3-storage.labels" . | nindent 4 }}
 data:
   SPRING_DATASOURCE_URL: jdbc:postgresql://resource-db:5432/resource_db
   SONG_SERVICE_URL: http://song-service:8091

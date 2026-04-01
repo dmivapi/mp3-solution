@@ -1,0 +1,5 @@
+Namespace: {{ .Values.namespace }}
+Replicas: {{ .Values.replicaCount }}
+
+Verify:
+  kubectl get pods -n {{ .Values.namespace }}

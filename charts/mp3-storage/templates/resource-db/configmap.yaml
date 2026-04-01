@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: resource-db-config
   namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "mp3-storage.labels" . | nindent 4 }}
 data:
   postgres-db: resource_db
   init.sql: |

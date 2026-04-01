@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: song-service-config
   namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "mp3-storage.labels" . | nindent 4 }}
 data:
   SPRING_DATASOURCE_URL: jdbc:postgresql://song-db:5432/song_db
   SPRING_JPA_HIBERNATE_DDL_AUTO: none

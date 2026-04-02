@@ -4,7 +4,7 @@ metadata:
   name: song-service-pvc
   namespace: {{ .Values.namespace }}
 spec:
-  storageClassName: manual
+  storageClassName: local-path
   accessModes:
     - ReadWriteOnce
   resources:

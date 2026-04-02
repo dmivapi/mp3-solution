@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   name: song-service-pv
 spec:
-  storageClassName: manual
+  storageClassName: local-path
   capacity:
     storage: 1Gi
   accessModes:

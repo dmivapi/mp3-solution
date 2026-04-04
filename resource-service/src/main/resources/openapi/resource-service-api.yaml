@@ -10,7 +10,7 @@ tags:
   - name: resources
     description: MP3 file management
 paths:
-  /resources:
+  /api/v1:
     post:
       tags:
         - resources
@@ -60,7 +60,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
-  /resources/{id}:
+  /api/v1/{id}:
     get:
       tags:
         - resources

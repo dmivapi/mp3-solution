@@ -23,7 +23,7 @@ spec:
       terminationGracePeriodSeconds: 40
       containers:
         - name: song-service
-          image: song-service:2.0
+          image: song-service:3.0
           imagePullPolicy: Never
           ports:
             - containerPort: 8091

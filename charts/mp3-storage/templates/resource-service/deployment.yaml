@@ -23,7 +23,7 @@ spec:
       terminationGracePeriodSeconds: 40
       containers:
         - name: resource-service
-          image: resource-service:2.0
+          image: resource-service:3.0
           imagePullPolicy: Never
           ports:
             - containerPort: 8090

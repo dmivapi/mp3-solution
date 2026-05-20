@@ -27,6 +27,7 @@ spec:
       labels:
         app: song-db
     spec:
+      enableServiceLinks: false
       containers:
         - name: song-db
           image: postgres:18-alpine

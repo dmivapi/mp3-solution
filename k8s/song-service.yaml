@@ -47,6 +47,7 @@ spec:
       labels:
         app: song-service
     spec:
+      enableServiceLinks: false
       terminationGracePeriodSeconds: 40
       containers:
         - name: song-service
